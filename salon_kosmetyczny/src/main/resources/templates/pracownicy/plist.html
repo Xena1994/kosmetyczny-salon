@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Lista pacjentów</title>
+</head>
+<body style="background-color: aquamarine">
+<div th:replace="shared/header :: header('home')"/>
+
+<div id="main" class="container">
+
+    <H1>Lista Pracowników</H1>
+
+    <div th:switch="${pracownicyListPage}">
+        <div th:case="null">
+            <span>Brak pracowników w bazie</span>
+        </div>
+        <div th:case="*">
+
+        <span th:inline="text">
+           Baza zawiera [[${pracownicyListPage.totalElements}]] pracownikow
+        </span>
+
+            <table class="table table-striped">
+                <thead  class="thead-light">
+                <tr>
+                    <th>Imie</th>
+                    <th>Nazwisko</th>
+                    <th sec:authorize="hasRole('ADMIN')">Opcje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pracownik : ${pracownicyListPage.content}">
+
+                    <td>
+                        <a th:href="@{/pracownicy/details(id=${pracownik.id})}"
+                           th:inline="text">[[${pracownik.firstName}]]</a>
+                    </td>
+                    <td>
+                        <a th:href="@{/pracownicy/details(id=${pracownik.id})}" th:inline="text">[[${pracownik.lastName}]]</a>
+                    </td>
+
+                    <td sec:authorize="hasRole('ADMIN')">
+                        <a class="btn btn-danger" th:href="@{/pracownicy/delete(id=${pracownik.id})}" th:text="Usuń"></a>
+                        <!-- TODO sec:authorize="hasRole('ROLE_ADMIN')"-->
+                        <a class="btn btn-success" th:href="@{/pracownicy/edit(id=${pracownik.id})}" th:text="Edytuj"></a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+            <div th:replace="shared/pagination :: pager('/pracownicy', ${pracownicyListPage})"></div>
+
+        </div>
+    </div>
+
+    </br></br>
+    <a  class="btn btn-success" href="/pracownicy/add"> Dodaj Pracownika</a>
+</div>
+</body>
+</html>

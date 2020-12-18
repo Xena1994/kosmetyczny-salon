@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Zabiegi</title>
+</head>
+<body style="background-color: aquamarine ">
+<div th:replace="shared/header :: header('treatments')"/>
+
+<div id="main" class="container">
+
+    <H1>Lista zabiegów</H1>
+
+    <div th:if="${treatments.isEmpty() eq true}">
+        <span>Brak zabiegów w bazie</span>
+    </div>
+    <div th:if="${treatments.isEmpty() eq false}">
+
+
+
+        <form id="searchForm" th:object="${searchCommand}" th:action="@{/treatments}" th:method="POST">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <input th:field="*{phrase}" placeholder="Nazwa zabiegu"/>
+                    <div class="error text-danger" th:if="${#fields.hasErrors('phrase')}">
+                        <p th:each="err : ${#fields.errors('name')}" th:text="${err}"></p>
+                    </div>
+                </div>
+            <div class="row">
+
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-info">
+                        <span class="glyphicon glyphicon-search"></span> Wyszukaj
+                    </button>
+                </div>
+            </div>
+            </div>
+        </form>
+
+
+        <table class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th>Nazwa</th>
+                <th>Cena</th>
+                <th sec:authorize="hasRole('ROLE_ADMIN')">Opcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="treatment : ${treatments}">
+
+                <td>
+                    <a th:href="@{/treatments/details/{id}(id=${treatment.id})}" th:inline="text">[[${treatment.name}]]</a>
+                </td>
+                <td th:inline="text">[[${treatment.price}]] zł</td>
+                <td sec:authorize="hasRole('ROLE_ADMIN')" >
+                    <a class="btn btn-danger" th:href="@{/treatments/delete(id=${treatment.id})}" th:text="Usuń"></a>
+                    <a class="btn btn-warning" th:href="@{/treatments/edit(id=${treatment.id})}">Edytuj</a>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a class="btn btn-success" href="/treatments/add" >Dodaj</a>
+   </div>
+
+</div>
+</body>
+</html>

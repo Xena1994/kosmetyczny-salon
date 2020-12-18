@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<div th:replace="shared/header :: header-css" />
+<title>Title</title>
+</head>
+<body style="background-color: aquamarine ">
+<div th:replace="shared/header :: header('none')" />
+
+<div class="card-body">
+    <!--/*@thymesVar id="msg" type=""*/-->
+    <h3 class="card-block alert-danger" th:text="${msg}">Wiadomość wyjątku</h3>
+</div>
+<h1>Witaj w zakładzie kosmetycznym Afrodyta !</h1>
+<h3>Życzymy udanych zabiegów!</h3>
+</body>
+</html>

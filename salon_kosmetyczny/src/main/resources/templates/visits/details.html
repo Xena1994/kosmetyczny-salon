@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Pracownicy</title>
+</head>
+<body style="background-color: aquamarine">
+<div th:replace="shared/header :: header('visits')"/>
+
+<div id="main" class="container">
+    <H1>Dane wizyty</H1>
+    Id: <b th:text="${visit.id}"></b><br/>
+    Data: <b th:href="@{/visits/{id}(id=${visit.id})}" th:inline="text">[[${visit.visitDate}]]</b><br/>
+    klient: <a th:href="@{/users/{id}(id=${visit.user.id})}" th:inline="text">[[${visit.user.username}]]</a><br/>
+    Specjalista: <a th:href="@{/pracownicy/{id}(id=${visit.pracownik.id})}" th:text="${visit.pracownik.firstName + ' ' + visit.pracownik.lastName}"></a><br/>
+    Status płatności: <b th:text="${visit.isFinished()}"></b><br/>
+    Cena: <b th:inline="text">[[${visit.getTotal()}]] zł</b><br/>
+    Lista zabiegów:<br/>
+    <span th:each="t : ${visit.treatments}" th:inline="text">[[${t.name}]] [[${t.price}]] zł<br/></span>
+
+    <div sec:authorize="hasRole('ROLE_USER')">
+    <a class="btn btn-success" th:href="@{/visits/{id}/addTreatment(id=${visit.id})}" >Dodaj zabieg</a>
+    </div>
+
+
+</div>
+</body>
+</html>

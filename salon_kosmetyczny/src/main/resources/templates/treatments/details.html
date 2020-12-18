@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Zabieg</title>
+</head>
+<body style="background-color: aquamarine ">
+<div th:replace="shared/header :: header('home')"/>
+
+<div id="main" class="container">
+    <H1>Dane zabiegu</H1>
+    Id: <b th:text="${treatment.id}"></b><br/>
+    Nazwa: <b th:text="${treatment.name}"></b><br/>
+    Cena: <b th:text="${treatment.price}"></b><br/>
+
+    <a class="btn btn-success" href="/treatments">Wróć do listy zabiegów</a>
+</div>
+</body>
+</html>

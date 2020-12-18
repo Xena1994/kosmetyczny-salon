@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Lista moich wizyt</title>
+</head>
+<body style="background-color: aquamarine">
+<div th:replace="shared/header :: header('visits')"/>
+
+<div id="main" class="container">
+
+    <H1>Moje wizyty</H1>
+
+    <div th:if="${visits.isEmpty() eq true}">
+        <span>Brak wizyt w bazie</span>
+    </div>
+    <div th:if="${visits.isEmpty() eq false}">
+
+        <table class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th>Termin wizyty</th>
+                <th>klient</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="visit : ${visits}">
+                <td>
+                    <a th:href="@{/visits/{id}(id=${visit.id})}" th:inline="text">[[${visit.visitDate}]]</a>
+                </td>
+                <td>
+                    <a th:href="@{/users/{id}(id=${visit.user.id})}" th:inline="text">[[${visit.user.username}]]</a>
+                </td>
+
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+</body>
+</html>

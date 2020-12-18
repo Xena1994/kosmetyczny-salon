@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Dodaj zabieg</title>
+</head>
+<body style="background-color: aquamarine">
+<div th:replace="shared/header :: header('visits')"/>
+
+<div class="container">
+
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form th:method="POST" th:object="${treatment}" th:action='@{/visits/{vid}/addTreatment(vid=${visit.id})}'>
+                <fieldset>
+                    <h1>Dodaj zabieg</h1>
+
+                    <div class="form-group">
+                        <select th:field="*{id}" class="form-control"
+                                th:classappend="${#fields.hasErrors('id')}?'is-invalid'">
+                            <option value="-1">--Zabieg--</option>
+                            <option th:each="oTreatment : ${treatments}"
+                                    th:value="${oTreatment.id}"
+                                    th:text="${oTreatment.name}"
+                            />
+                        </select>
+                        <div class="error text-danger" th:if="${#fields.hasErrors('id')}">
+                            <p th:each="err : ${#fields.errors('id')}" th:text="${err}"></p>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Dodaj"/>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

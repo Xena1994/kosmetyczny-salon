@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <div th:replace="shared/header :: header-css"/>
+    <title>Lista wizyt</title>
+</head>
+<body style="background-color: aquamarine">
+<div th:replace="shared/header :: header('visits')"/>
+
+<div id="main" class="container">
+
+    <h1>Wszystkie wizyty</h1>
+    <div th:if="${visitsList.isEmpty() eq true}">
+        <span>Brak wizyt w bazie</span>
+    </div>
+    <div th:if="${visitsList.isEmpty() eq false}">
+
+        <table class="table table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th>id</th>
+                <th>Data wizyty</th>
+                <th>Do zapłaty</th>
+                <th>Zapłacono</th>
+                <th>Klient</th>
+                <th>Specjalista</th>
+
+
+                <th>Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="visit : ${visitsList}">
+                <td>
+                    <a th:href="@{/visits/{id}(id=${visit.id})}" th:inline="text">[[${visit.id}]]</a>
+                </td>
+                <td th:inline="text">[[${#dates.format(visit.visitDate , 'dd-MM-yyyy')}]]</td>
+                <td th:inline="text">[[${visit.getTotal()}]] zł</td>
+                <td th:inline="text">[[${visit.isFinished()}]]</td>
+                <td th:inline="text">[[${visit.user.username}]]</td>
+                <td th:inline="text">[[${visit.pracownik.firstName}]] [[${visit.pracownik.lastName}]]</td>
+                <td >
+                    <a class="btn btn-danger" th:href="@{/visits/delete(id=${visit.id})}" th:text="Usuń"></a>
+                    <a class="btn btn-success" th:href="@{/visits/edit(id=${visit.id})}">Edytuj</a>
+                    <a class="btn btn-success" th:href="@{/visits/{id}/processPayment(id=${visit.id})}" >Potwierdź wpłatę</a>
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <a class="btn btn-success" href="/visits/add" >Dodaj wizytę</a>
+
+
+</div>
+</body>
+</html>
